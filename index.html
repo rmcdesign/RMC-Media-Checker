@@ -1,122 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Media Checker</title>
+  <meta charset="UTF-8">
+  <title>Media Checker</title>
 </head>
-
 <style>
-body {
-    padding: 10px;
-    margin:0;
-    overflow:hidden;
+body:after {
+  display: none;
 }
-    @media (max-width: 1920px) {
-        body {
-            max-width: 1920px;
-            background: purple;
-        }
-    }
-    @media (max-width: 1366px) {
-        body {
-            max-width: 1366px;
-            background: green;
-        }
-    }
-    @media (max-width: 767px) {
-        body {
-            max-width: 767px;
-            background: red;
-        }
-    }
-
-    img {
-        display: block;
-        max-width: 100%;
-        width: 100%;
-        height: auto;
-    }
+@media only screen and (min-width: 544px) {
+  body:after {
+    content: "sm";
+  }
+}
+@media only screen and (min-width: 768px) {
+  body:after {
+    content: "md";
+  }
+}
+@media only screen and (min-width: 992px) {
+  body:after {
+    content: "lg";
+  }
+}
 </style>
 <body>
-
-    <img class="responsive" src="img/760x428blur.jpg" 
-    data-imgsm="img/760x428.jpg" 
-    data-imglg="img/1200x675.jpg"
-    data-imgxl="img/1920x1080.jpg" alt="Image Description">
-
-<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.11.4/TweenMax.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="js/vendor/jquery-1.11.3.min.js"><\/script>')</script>
-
-<script>
-
-var maxSize,suppress,imgsrc;
-
-$(document).ready(function() {
-    // run test on initial page load
-    checkSize();
-
-    imageSource();
-
-    $bg = $('.responsive');
-
-    TweenMax.set( $bg, {x: 0, y:0, z:0, scale: 1, opacity: 1});
-    TweenMax.to( $bg, 10, {
-        css: {
-            scale: 1.1,
-            x: -( $bg.width() * 0.05 ),
-            y: -( $bg.height() * 0.05 ),
-            z: 0.1,
-            rotationZ: "0.01deg",
-            transformOrigin: "0 0",
-            force3D: true
-        },
-        ease:Linear.easeNone,
-        force3D:true,
-        overwrite: true
-    });
-
-});
-
-// check on resize but only every 200ms
-
-function resizedW(){
-    checkSize();
-    imageSource();
-}
-window.onresize = function() {
-    clearTimeout(suppress);
-    suppress = setTimeout(function() {
-        resizedW();
-    }, 100);
-};
-
-//Function to the css rule
-function checkSize(){
-    if ($("body").css("max-width") == "1920px" ){
-        maxSize = 'xl';
-    }
-    if ($("body").css("max-width") == "1366px" ){
-        maxSize = 'lg';
-    }
-    if ($("body").css("max-width") == "767px" ){
-        maxSize = 'sm';
-    }
-}
-
-function imageSource() {
-    imgs = $('.responsive');   
-
-    imgs.each(function() {
-        var $this = $(this);
-        var data = $this.data();
-        var url = data['img'+ maxSize]; 
-        $this.attr('src', url);
-        console.log(maxSize);
-    });
-}
-
-</script>
-    
+<script src="media-checker.js"></script>
 </body>
 </html>
